@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using Application.Queries.GetAllChampionships;
+
 
 <PageTitle>Inicio</PageTitle>
 
@@ -8,3 +10,20 @@
     <h3>Ligas</h3>
 </div>
 
+@code{
+    private AllChampionshipsVm _vm = null!;
+
+    [Inject]
+    private IMediator _mediator { get; set; } = null!;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        _vm = await _mediator.Send(new GetAllChampionshipsQuery());    
+    }
+}

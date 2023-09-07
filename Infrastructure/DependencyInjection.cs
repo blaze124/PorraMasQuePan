@@ -11,12 +11,15 @@ namespace Infrastructure
     {
         private static readonly string ConnectionString = "Server=localhost;Uid=root;Pwd=Pass1234+;Database=porrasapp;";
 
-        public static void InitializeDependencies(this IServiceCollection services, IConfiguration configuration)
-        { 
-            services.AddDbContext<AppDbContext>(opts => opts.UseMySql(ConnectionString, ServerVersion.AutoDetect(ConnectionString)), ServiceLifetime.Scoped, ServiceLifetime.Scoped);
-            services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<IDbContextFactory<AppDbContext>>().CreateDbContext());
-            services.AddMediatR(_ => _.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        public static IServiceCollection InitializeInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContextFactory<AppDbContext>(options =>
+                options.UseMySql(ConnectionString, ServerVersion.AutoDetect(ConnectionString)),
+                ServiceLifetime.Transient);
+            //services.AddDbContext<AppDbContext>(opts => opts.UseMySql(ConnectionString, ServerVersion.AutoDetect(ConnectionString)), ServiceLifetime.Transient, ServiceLifetime.Transient);
+            services.AddTransient<IAppDbContext>(provider => provider.GetRequiredService<IDbContextFactory<AppDbContext>>().CreateDbContext());
+
+            return services;
         }
 
     }

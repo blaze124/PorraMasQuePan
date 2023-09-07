@@ -1,11 +1,17 @@
 using Infrastructure;
+using Application;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.InitializeInfrastructure(builder.Configuration);
+builder.Services.InitializeApplication(builder.Configuration);
+
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.InitializeDependencies(builder.Configuration);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
 
 
 var app = builder.Build();

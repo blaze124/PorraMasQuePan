@@ -30,7 +30,6 @@
   <ItemGroup>
     <Folder Include="Commands\ContestantCommand\" />
     <Folder Include="Commands\MatchCommand\" />
-    <Folder Include="Queries\GetAllChampionships\" />
     <Folder Include="Queries\GetAllContestants\" />
     <Folder Include="Queries\GetAllMatches\" />
   </ItemGroup>
